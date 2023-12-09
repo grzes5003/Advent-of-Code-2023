@@ -35,7 +35,7 @@ impl Desert {
         let mut instructions = self.instructions.iter().cycle();
         let mut steps = 0;
         let mut pos = start;
-        loop {
+        while !end_cond(pos) {
             let dir = instructions.next().unwrap();
             let (left, right) = self.map.get(pos).unwrap();
             pos = match dir {
@@ -43,10 +43,8 @@ impl Desert {
                 Direction::Right => right
             };
             steps += 1;
-            if end_cond(pos) {
-                return steps;
-            }
         }
+        steps
     }
 
 }
@@ -79,7 +77,7 @@ impl<'a> Solution<'a> for Day {
 
     fn parse_input(raw_input: &Vec<String>) -> Self::Input {
         let mut input = raw_input.iter();
-        let directions = input.next().unwrap()
+        let instructions = input.next().unwrap()
             .chars()
             .map(|c| c.to_string().parse())
             .collect::<Result<Vec<Direction>, _>>().unwrap();
@@ -94,7 +92,7 @@ impl<'a> Solution<'a> for Day {
         }).collect();
 
         Desert {
-            instructions: directions,
+            instructions,
             map
         }
     }
