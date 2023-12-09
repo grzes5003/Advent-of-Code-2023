@@ -30,25 +30,8 @@ pub struct Desert {
 }
 
 impl Desert {
-    fn count_steps(&self, start: &str, end: &str) -> usize {
-        let mut instructions = self.instructions.iter().cycle();
-        let mut steps = 0;
-        let mut pos = start;
-        loop {
-            let dir = instructions.next().unwrap();
-            let (left, right) = self.map.get(pos).unwrap();
-            pos = match dir {
-                Direction::Left => left,
-                Direction::Right => right
-            };
-            steps += 1;
-            if pos == end {
-                return steps;
-            }
-        }
-    }
 
-    fn count_steps_any(&self, start: &str) -> usize {
+    fn count_steps(&self, start: &str, end_cond: &dyn Fn(&str) -> bool) -> usize {
         let mut instructions = self.instructions.iter().cycle();
         let mut steps = 0;
         let mut pos = start;
@@ -60,7 +43,7 @@ impl Desert {
                 Direction::Right => right
             };
             steps += 1;
-            if pos.chars().last() == Some('Z') {
+            if end_cond(pos) {
                 return steps;
             }
         }
@@ -81,13 +64,15 @@ impl<'a> Solution<'a> for Day {
     const DAY: &'a str = "Day08";
 
     fn part1(input: &Self::Input) -> Self::Output {
-        input.count_steps(START, END)
+        let end_cond = |s: &str| s == END;
+        input.count_steps(START, &end_cond)
     }
 
     fn part2(input: &Self::Input) -> Self::Output {
+        let end_cond = |s: &str| s.chars().last() == Some('Z');
         let steps = input.map.iter()
             .filter(|(k, _)| k.chars().last() == Some('A'))
-            .map(|(k, _)| input.count_steps_any(k))
+            .map(|(k, _)| input.count_steps(k, &end_cond))
             .collect::<Vec<_>>();
         commons::lcm(steps)
     }
