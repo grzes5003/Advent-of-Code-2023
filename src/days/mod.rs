@@ -9,6 +9,9 @@ mod day08;
 mod day09;
 mod day10;
 mod day11;
+mod day12;
+mod day15;
+mod day16;
 
 pub use day01::Day as Day01;
 pub use day02::Day as Day02;
@@ -21,3 +24,6 @@ pub use day08::Day as Day08;
 pub use day09::Day as Day09;
 pub use day10::Day as Day10;
 pub use day11::Day as Day11;
+pub use day12::Day as Day12;
+pub use day15::Day as Day15;
+pub use day16::Day as Day16;
