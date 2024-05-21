@@ -62,7 +62,7 @@ fn solve1(lists: List(List(Int))) -> Result(Int, Nil) {
 fn solve2(lists: List(List(Int))) -> Result(Int, Nil) {
   lists
   |> it.from_list()
-  |> it.map(fn(list) {list.reverse(list)})
+  |> it.map(fn(list) { list.reverse(list) })
   |> solve()
 }
 
